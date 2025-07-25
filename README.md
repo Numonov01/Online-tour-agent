@@ -147,8 +147,7 @@ You may use this version for personal and educational purposes.</p>
 <p>
   Need support or custom development?<br/>
   📩 <a href="https://themixly.com/contact-us/" target="_blank">Contact Themixly Team</a><br/>
-</p>
-
+</p><br/>
 <footer>
   © 2025 Themixly. All rights reserved. | Built with ❤️ for developers & designers.
 </footer>
