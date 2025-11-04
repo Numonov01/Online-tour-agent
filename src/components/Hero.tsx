@@ -1,29 +1,30 @@
+// src/components/Hero.tsx
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import Slide1 from '../assets/images/slide-1.webp';
-import Slide2 from '../assets/images/slide-2.webp';
-import Slide3 from '../assets/images/slide-3.webp';
+import Slide1 from "../assets/images/registon.jpg";
+import Slide2 from "../assets/images/registon2.jpg";
+import Slide3 from "../assets/images/registon3.jpg";
 
 const slides = [
   {
     image: Slide1,
-    title: "Unleash the Spirit of the Wild",
+    title: "Registon: Where History Meets Majesty",
     description:
       "Embark on unforgettable adventures—from thrilling game drives across open savannahs to tranquil nature escapes crafted just for you.",
   },
   {
     image: Slide2,
-    title: "Create Memories That Roar",
+    title: "Gur i amir: Safarning Yuragi",
     description:
-      "Hear firsthand from travelers who’ve witnessed Africa’s wonders—each safari is a unique chapter in your wild story.",
+      "Discover the thrill of safari adventures that bring you closer to nature's wonders and create memories that last a lifetime.",
   },
   {
     image: Slide3,
-    title: "Every Animal Has a Story to Tell",
+    title: "Siyob bozori: Tarix va Buyuklik Uchrashuvi",
     description:
-      "Step into our wildlife world and discover the incredible traits, behaviors, and beauty of Africa’s iconic creatures.",
+      "1950-yillarda bu hududlarning barchasi bekor qilindi. 1976 yilda Bogʻishamol.",
   },
 ];
 
@@ -90,10 +91,14 @@ const Hero = () => {
           {/* Slide content */}
           <div className="relative h-full flex items-center justify-center text-center text-white p-4 z-20">
             <div className="max-w-4xl animate-fadeIn">
-              <h1 className="text-5xl md:text-7xl font-bold mb-4">{slide.title}</h1>
-              <p className="text-lg md:text-xl mb-8 max-w-2xl mx-auto">{slide.description}</p>
+              <h1 className="text-5xl md:text-7xl font-bold mb-4">
+                {slide.title}
+              </h1>
+              <p className="text-lg md:text-xl mb-8 max-w-2xl mx-auto">
+                {slide.description}
+              </p>
               <Link to="#">
-                <Button className="bg-white text-safari-green hover:bg-safari-gold hover:text-white z-30">
+                <Button className="bg-[#F9C80E] text-black hover:bg-[#bdb715] hover:text-white z-30">
                   Explore Now
                 </Button>
               </Link>

@@ -1,3 +1,4 @@
+// src/components/ImageCard.tsx
 import { Link } from "react-router-dom";
 
 interface Item {
@@ -31,7 +32,7 @@ const ImageCard: React.FC<ImageCardProps> = ({ arr }) => {
             <div className="flex flex-col items-center px-5 pt-2 pb-2 text-center">
               <Link
                 to={item.url}
-                className="flex items-center text-[#2A624C] font-medium hover:text-safari-brown transition-colors duration-200 cursor-pointer"
+                className="flex items-center text-[#F9C80E] font-medium hover:text-[#E0A800] transition-colors duration-200 cursor-pointer"
               >
                 <h3 className="text-[18px] font-semibold">{item.title}</h3>
               </Link>

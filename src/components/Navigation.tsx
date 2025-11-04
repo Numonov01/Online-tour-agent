@@ -1,8 +1,9 @@
+// src/components/Navigation.tsx
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Phone, Mail } from "lucide-react";
 import { itineraryData } from "../../src/data";
-import Logo from "../assets/images/logo.webp";
+import Logo from "../assets/images/waq.png";
 
 import { FaFacebookF, FaInstagram, FaTwitter } from "react-icons/fa";
 
@@ -38,12 +39,12 @@ const Navigation = () => {
     <nav className="fixed top-0 w-full bg-white/95 backdrop-blur-sm z-50 shadow-sm overflow-h">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-[80px]">
-          <Link to="/" className="text-2xl font-bold text-[#2A624C]">
+          <Link to="/" className="text-2xl font-bold text-[#F9C80E]">
             <img
               src={Logo}
               alt="Logo | TourCraft Limited"
               className="p-2"
-              width={200}
+              width={100}
               height={150}
             />
           </Link>
@@ -55,7 +56,7 @@ const Navigation = () => {
             {/* Itineraries Button */}
             <div className="relative group">
               {/* Main Dropdown Button */}
-              <div className="flex items-center text-[#2A624C] font-medium hover:text-safari-brown transition-colors duration-200 cursor-pointer">
+              <div className="flex items-center text-[#F9C80E] font-medium hover:text-[#E0A800] transition-colors duration-200 cursor-pointer">
                 <span>Itineraries</span>
                 <svg
                   className="w-4 h-4 ml-1 transform group-hover:rotate-180 transition-transform duration-300"
@@ -77,11 +78,8 @@ const Navigation = () => {
                 {Object.entries(itineraryData).map(([country, daysObj]) => (
                   <div key={country} className="relative group/item">
                     {/* Country Row */}
-                    <div className="flex items-center justify-between px-4 py-2 mt-2 text-[#2A624C] hover:text-safari-brown hover:bg-gray-100 transition-colors duration-200 whitespace-nowrap cursor-pointer">
-                      <Link
-                        to="#"
-                        className="w-full font-medium"
-                      >
+                    <div className="flex items-center justify-between px-4 py-2 mt-2 text-[#F9C80E] hover:text-safari-brown hover:bg-gray-100 transition-colors duration-200 whitespace-nowrap cursor-pointer">
+                      <Link to="#" className="w-full font-medium">
                         {country.charAt(0).toUpperCase() + country.slice(1)}
                       </Link>
                       <svg
@@ -104,7 +102,7 @@ const Navigation = () => {
                         <Link
                           key={daysKey}
                           to="#"
-                          className="px-4 py-2 text-[#2A624C] hover:text-safari-brown hover:bg-gray-100 transition-colors duration-200 whitespace-nowrap font-medium"
+                          className="px-4 py-2 text-[#F9C80E] hover:text-safari-brown hover:bg-gray-100 transition-colors duration-200 whitespace-nowrap font-medium"
                         >
                           {info.title}
                         </Link>
@@ -127,7 +125,7 @@ const Navigation = () => {
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6 text-[#2A624C]"
+              className="h-6 w-6 text-[#F9C80E]"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -159,12 +157,8 @@ const Navigation = () => {
       >
         <div>
           <div className="flex items-center justify-between p-4">
-            <Link to="/" className="text-xl font-bold text-[#2A624C] ">
-              <img
-                src={Logo}
-                alt="Logo | TourCraft Limited"
-                className="p-5"
-              />
+            <Link to="/" className="text-xl font-bold text-[#F9C80E] ">
+              <img src={Logo} alt="Logo | TourCraft Limited" className="p-5" />
             </Link>
             <button onClick={() => setMenuOpen(false)} aria-label="Close Menu">
               <svg
@@ -194,7 +188,7 @@ const Navigation = () => {
             <div className="w-full md:hidden">
               {/* Main Toggle */}
               <div
-                className="flex items-center justify-between  py-2 text-[#2A624C] font-medium cursor-pointer"
+                className="flex items-center justify-between  py-2 text-[#F9C80E] font-medium cursor-pointer"
                 onClick={() => setIsMainOpen(!isMainOpen)}
               >
                 <span>Itineraries</span>
@@ -207,7 +201,7 @@ const Navigation = () => {
                   {Object.entries(itineraryData).map(([country, daysObj]) => (
                     <div key={country}>
                       {/* Country Toggle */}
-                      <div className="flex items-center justify-between px-6 py-2 text-[#2A624C] font-medium">
+                      <div className="flex items-center justify-between px-6 py-2 text-[#F9C80E] font-medium">
                         <Link
                           to="#"
                           className="cursor-pointer hover:text-safari-brown"
@@ -229,7 +223,7 @@ const Navigation = () => {
                             <Link
                               key={daysKey}
                               to="#"
-                              className="px-4 py-2 text-sm text-[#2A624C] hover:text-safari-brown font-medium"
+                              className="px-4 py-2 text-sm text-[#F9C80E] hover:text-safari-brown font-medium"
                             >
                               {info.title}
                             </Link>
@@ -256,7 +250,7 @@ const Navigation = () => {
         {/* Bottom Contact Section */}
         <div className="p-4">
           <div>
-            <ul className="space-y-4 text-[#2A624C]">
+            <ul className="space-y-4 text-[#F9C80E]">
               <li className="flex items-center">
                 <Mail className="mr-2 h-5 w-5 flex-shrink-0" />
                 <span>info@tourcraft.com</span>
@@ -272,19 +266,19 @@ const Navigation = () => {
           <div className="flex gap-4 mt-4">
             <a
               href="https://www.facebook.com/"
-              className="text-[#2A624C] hover:text-gray-700 transition-colors"
+              className="text-[#F9C80E] hover:text-gray-700 transition-colors"
             >
               <FaFacebookF />
             </a>
             <a
               href="/https://www.instagram.com/"
-              className="text-[#2A624C] hover:text-gray-700 transition-colors"
+              className="text-[#F9C80E] hover:text-gray-700 transition-colors"
             >
               <FaInstagram />
             </a>
             <a
               href="/#"
-              className="text-[#2A624C] hover:text-gray-700 transition-colors"
+              className="text-[#F9C80E] hover:text-gray-700 transition-colors"
             >
               <FaTwitter />
             </a>
@@ -307,7 +301,7 @@ const NavLink = ({
   <Link
     to={to}
     onClick={onClick}
-    className="text-[#2A624C] font-medium hover:text-safari-brown transition-colors duration-200"
+    className="text-[#F9C80E] font-medium hover:text-[#E0A800] transition-colors duration-200"
   >
     {children}
   </Link>

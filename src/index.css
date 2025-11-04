@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -128,10 +129,10 @@
   visibility: visible;
 }
 .progress-track {
-  stroke: #e2e8f0; /* light gray ring */
+  stroke: #e2e8f0;
 }
 .progress-indicator {
-  stroke: #2a624b; /* dark safari green progress */
+  stroke: #2a624b; 
   stroke-linecap: round;
   transition: stroke-dashoffset 10ms linear;
 }

@@ -1,4 +1,4 @@
-
+// tailwind.config.ts
 import type { Config } from "tailwindcss";
 
 export default {
@@ -18,73 +18,74 @@ export default {
         "2xl": "1400px",
       },
     },
-    extend: {
-      colors: {
-        safari: {
-          green: "#2A624C",
-          brown: "#8B4513",
-          gold: "#DAA520",
-          beige: "#F5F5DC",
-          lightgreen: "#3D8D73", // lighter shade of #2A624C
-          darkgreen: "#1A3E31", // darker shade of #2A624C
-        },
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
-        },
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
-        },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
-        },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
-        },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
-        },
-        popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
-        },
-        card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
-        },
-      },
-      fontFamily: {
-        sans: ["Poppins", "sans-serif"],
-      },
-      keyframes: {
-        "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
-        },
-        "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
-        },
-        fadeIn: {
-          "0%": { opacity: "0" },
-          "100%": { opacity: "1" },
-        },
-      },
-      animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
-        fadeIn: "fadeIn 1s ease-in forwards",
-      },
+   extend: {
+  colors: {
+    safari: {
+      yellow: "#F9C80E",     // asosiy sariq (primary)
+      darkyellow: "#E0A800", // quyuq sariq (hover / accent)
+      gold: "#FFD700",       // oltin ohang (highlightlar uchun)
+      beige: "#FFF8DC",      // yumshoq bej fonlar uchun
+      lightyellow: "#FFECB3",// och sariq (secondary background)
+      brown: "#8B6508",      // iliq jigarrang, kontrast uchun
     },
+    border: "hsl(var(--border))",
+    input: "hsl(var(--input))",
+    ring: "hsl(var(--ring))",
+    background: "hsl(var(--background))",
+    foreground: "hsl(var(--foreground))",
+    primary: {
+      DEFAULT: "hsl(var(--primary))",
+      foreground: "hsl(var(--primary-foreground))",
+    },
+    secondary: {
+      DEFAULT: "hsl(var(--secondary))",
+      foreground: "hsl(var(--secondary-foreground))",
+    },
+    destructive: {
+      DEFAULT: "hsl(var(--destructive))",
+      foreground: "hsl(var(--destructive-foreground))",
+    },
+    muted: {
+      DEFAULT: "hsl(var(--muted))",
+      foreground: "hsl(var(--muted-foreground))",
+    },
+    accent: {
+      DEFAULT: "hsl(var(--accent))",
+      foreground: "hsl(var(--accent-foreground))",
+    },
+    popover: {
+      DEFAULT: "hsl(var(--popover))",
+      foreground: "hsl(var(--popover-foreground))",
+    },
+    card: {
+      DEFAULT: "hsl(var(--card))",
+      foreground: "hsl(var(--card-foreground))",
+    },
+  },
+  fontFamily: {
+    sans: ["Poppins", "sans-serif"],
+  },
+  keyframes: {
+    "accordion-down": {
+      from: { height: "0" },
+      to: { height: "var(--radix-accordion-content-height)" },
+    },
+    "accordion-up": {
+      from: { height: "var(--radix-accordion-content-height)" },
+      to: { height: "0" },
+    },
+    fadeIn: {
+      "0%": { opacity: "0" },
+      "100%": { opacity: "1" },
+    },
+  },
+  animation: {
+    "accordion-down": "accordion-down 0.2s ease-out",
+    "accordion-up": "accordion-up 0.2s ease-out",
+    fadeIn: "fadeIn 1s ease-in forwards",
+  },
+},
+
   },
   plugins: [require("tailwindcss-animate")],
 } satisfies Config;
