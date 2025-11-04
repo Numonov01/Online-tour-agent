@@ -59,23 +59,23 @@ git clone https://github.com/Numonov01/Online-tour-agent.git
 2. Install dependencies:
 
 ```bash
-bun install
+npm install
 ```
 
 3. Start the development server:
 
 ```bash
-bun run dev
+npm run dev
 ```
 
 The application will be available at `http://localhost:5173`
 
 ## 🔧 Available Scripts
 
-- `bun run dev` - Start development server
-- `bun run build` - Build for production
-- `bun run preview` - Preview production build
-- `bun run lint` - Run ESLint
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
 
 ## 📱 Responsive Design
 
