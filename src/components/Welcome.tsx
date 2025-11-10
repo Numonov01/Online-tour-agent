@@ -1,10 +1,53 @@
 // src/components/Welcome.tsx
 import { useState } from "react";
+import axios from "axios";
+
+const API_BASE_URL = import.meta.env.VITE_SERVER_URL;
+
+interface ScheduleItem {
+  time: string;
+  activity: string;
+  cost_usd: number;
+}
+
+interface DailyPlan {
+  day: number;
+  date: string;
+  schedule: ScheduleItem[];
+  total_cost_day_usd: number;
+}
+
+interface TripSummary {
+  month: string;
+  duration_days: number;
+  group_numbers: number;
+  group_type: string;
+  estimated_total_cost_usd: number;
+}
+
+interface ApiResponse {
+  status: string;
+  result: {
+    trip_summary: TripSummary;
+    daily_plan: DailyPlan[];
+    total_hotel_cost_day_usd_for_all_members: number;
+    notes: string;
+  };
+}
+
+interface UserInput {
+  age: string;
+  group_type: string;
+  budget_usd: string;
+  days: string;
+  month: string;
+  people_count: string;
+  is_disabled: boolean;
+}
 
 const Welcome = () => {
-  const [userInput, setUserInput] = useState({
+  const [userInput, setUserInput] = useState<UserInput>({
     age: "",
-    gender: "",
     group_type: "",
     budget_usd: "",
     days: "",
@@ -13,13 +56,9 @@ const Welcome = () => {
     is_disabled: false,
   });
 
-  const [searchResult, setSearchResult] = useState(null);
-
-  const genders = [
-    { value: "male", label: "Erkak" },
-    { value: "female", label: "Ayol" },
-    { value: "other", label: "Boshqa" },
-  ];
+  const [searchResult, setSearchResult] = useState<ApiResponse | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const groupTypes = [
     { value: "solo", label: "Yakka" },
@@ -46,101 +85,67 @@ const Welcome = () => {
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
+    setError(null);
 
-    // Mock API call - keyinchalik backend bilan almashtiriladi
-    const totalBudget = parseInt(userInput.budget_usd) || 180;
-    const peopleCount = parseInt(userInput.people_count) || 1;
-    const perPersonBudget = Math.floor(totalBudget / peopleCount);
+    try {
+      // Backendga yuboriladigan ma'lumotlarni tayyorlash
+      const requestData = {
+        age: parseInt(userInput.age) || 30,
+        group_type: userInput.group_type || "family",
+        budget_usd: parseInt(userInput.budget_usd) || 500,
+        days: parseInt(userInput.days) || 3,
+        month: userInput.month || "Noyabr",
+        group_numbers: parseInt(userInput.people_count) || 2,
+        is_disabled: userInput.is_disabled || false,
+      };
 
-    const mockResponse = {
-      trip_summary: {
-        city: "Samarqand",
-        month: userInput.month || "Aprel",
-        duration_days: parseInt(userInput.days) || 2,
-        estimated_total_cost_usd: totalBudget,
-        people_count: peopleCount,
-        budget_per_person_usd: perPersonBudget,
-      },
-      daily_plan: [
+      console.log("Backendga yuborilayotgan ma'lumot:", requestData);
+
+      // Backend API ga so'rov yuborish
+      const response = await axios.post<ApiResponse>(
+        `${API_BASE_URL}travel/`,
+        requestData,
         {
-          day: 1,
-          date: "2024-04-15",
-          schedule: [
-            {
-              time: "08:00",
-              activity: "Mahalliy kafeda nonushta",
-              cost_usd: 8 * peopleCount,
-              type: "food",
-            },
-            {
-              time: "10:00",
-              activity: "Registon maydoniga ekskursiya",
-              cost_usd: 15 * peopleCount,
-              type: "sightseeing",
-            },
-            {
-              time: "13:00",
-              activity: "Restoranda tushlik",
-              cost_usd: 12 * peopleCount,
-              type: "food",
-            },
-            {
-              time: "15:00",
-              activity: "Gur-Emir maqbarasiga tashrif",
-              cost_usd: 10 * peopleCount,
-              type: "sightseeing",
-            },
-            {
-              time: "19:00",
-              activity: "Kechki ovqat va folklor ko'rgazmasi",
-              cost_usd: 25 * peopleCount,
-              type: "entertainment",
-            },
-          ],
-          total_cost_day_usd: 70 * peopleCount,
-        },
-        {
-          day: 2,
-          date: "2024-04-16",
-          schedule: [
-            {
-              time: "09:00",
-              activity: "Mehmonxonada nonushta",
-              cost_usd: 0,
-              type: "food",
-            },
-            {
-              time: "11:00",
-              activity: "Ulug'bek rasadxonasiga tashrif",
-              cost_usd: 12 * peopleCount,
-              type: "sightseeing",
-            },
-            {
-              time: "14:00",
-              activity: "Bozorda tushlik va xarid",
-              cost_usd: 20 * peopleCount,
-              type: "shopping",
-            },
-            {
-              time: "17:00",
-              activity: "Aeroportga transfer",
-              cost_usd: 15 * peopleCount,
-              type: "transport",
-            },
-          ],
-          total_cost_day_usd: 47 * peopleCount,
-        },
-      ],
-    };
+          headers: {
+            "Content-Type": "application/json",
+          },
+          timeout: 30000, // 30 soniya timeout
+        }
+      );
 
-    setSearchResult(mockResponse);
-    console.log("Foydalanuvchi ma'lumotlari:", userInput);
-    console.log("Qidiruv natijasi:", mockResponse);
+      console.log("Backenddan kelgan javob:", response.data);
+
+      if (response.data.status === "success") {
+        setSearchResult(response.data);
+      } else {
+        setError("Serverdan xato qaytdi");
+      }
+    } catch (err) {
+      console.error("API so'rovi xatosi:", err);
+      if (axios.isAxiosError(err)) {
+        if (err.response) {
+          setError(
+            `Server xatosi: ${err.response.status} - ${err.response.data}`
+          );
+        } else if (err.request) {
+          setError(
+            "Serverga ulanib bo'lmadi. Iltimos, internet aloqasini tekshiring."
+          );
+        } else {
+          setError(`So'rov yuborishda xato: ${err.message}`);
+        }
+      } else {
+        setError("Noma'lum xato yuz berdi");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleInputChange = (
-    field: string,
-    value: string | boolean | number
+    field: keyof UserInput,
+    value: string | boolean
   ) => {
     setUserInput((prev) => ({
       ...prev,
@@ -165,7 +170,6 @@ const Welcome = () => {
         {/* Qidiruv Formasi */}
         <div className="bg-gray-50 rounded-lg shadow-md p-6 mb-8">
           <form onSubmit={handleSearch} className="space-y-6">
-            {/* Birinchi qator: Yosh, Jins, Guruh turi */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -179,25 +183,8 @@ const Welcome = () => {
                   placeholder="Yoshingizni kiriting"
                   min="18"
                   max="100"
+                  required
                 />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Jins
-                </label>
-                <select
-                  value={userInput.gender}
-                  onChange={(e) => handleInputChange("gender", e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F9C80E] focus:border-transparent"
-                >
-                  <option value="">Jinsni tanlang</option>
-                  {genders.map((gender) => (
-                    <option key={gender.value} value={gender.value}>
-                      {gender.label}
-                    </option>
-                  ))}
-                </select>
               </div>
 
               <div>
@@ -210,6 +197,7 @@ const Welcome = () => {
                     handleInputChange("group_type", e.target.value)
                   }
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F9C80E] focus:border-transparent"
+                  required
                 >
                   <option value="">Guruh turini tanlang</option>
                   {groupTypes.map((type) => (
@@ -219,10 +207,7 @@ const Welcome = () => {
                   ))}
                 </select>
               </div>
-            </div>
 
-            {/* Ikkinchi qator: Odamlar soni, Byudjet, Kunlar */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Odamlar soni
@@ -237,9 +222,12 @@ const Welcome = () => {
                   placeholder="Nechi kishi"
                   min="1"
                   max="20"
+                  required
                 />
               </div>
+            </div>
 
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Byudjet (USD)
@@ -252,7 +240,8 @@ const Welcome = () => {
                   }
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F9C80E] focus:border-transparent"
                   placeholder="Umumiy byudjet"
-                  min="50"
+                  min="0"
+                  required
                 />
                 {userInput.people_count &&
                   parseInt(userInput.people_count) > 1 &&
@@ -278,13 +267,11 @@ const Welcome = () => {
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F9C80E] focus:border-transparent"
                   placeholder="Kunlar soni"
                   min="1"
-                  max="30"
+                  max="7"
+                  required
                 />
               </div>
-            </div>
 
-            {/* Uchinchi qator: Oy va Qulayliklar */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Sayohat oyi
@@ -293,6 +280,7 @@ const Welcome = () => {
                   value={userInput.month}
                   onChange={(e) => handleInputChange("month", e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F9C80E] focus:border-transparent"
+                  required
                 >
                   <option value="">Oyni tanlang</option>
                   {months.map((month) => (
@@ -302,7 +290,9 @@ const Welcome = () => {
                   ))}
                 </select>
               </div>
+            </div>
 
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="flex items-center space-x-3 pt-6">
                 <input
                   type="checkbox"
@@ -319,20 +309,36 @@ const Welcome = () => {
               </div>
             </div>
 
+            {/* Xato xabari */}
+            {error && (
+              <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                <p className="text-red-700 text-sm">{error}</p>
+              </div>
+            )}
+
             {/* Qidiruv Tugmasi */}
             <div className="pt-4">
               <button
                 type="submit"
-                className="w-full bg-[#F9C80E] text-white py-3 px-6 rounded-lg font-semibold hover:bg-[#E0A800] transition-colors duration-200 shadow-md hover:shadow-lg"
+                disabled={loading}
+                className="w-full bg-[#F9C80E] text-white py-3 px-6 rounded-lg font-semibold hover:bg-[#E0A800] transition-colors duration-200 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Sayohat marshrutini yaratish
+                {loading ? "Yuklanmoqda..." : "Sayohat marshrutini yaratish"}
               </button>
             </div>
           </form>
         </div>
 
+        {/* Yuklash holati */}
+        {loading && (
+          <div className="bg-white rounded-lg shadow-md p-6 text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#F9C80E] mx-auto"></div>
+            <p className="text-gray-600 mt-4">Marshrut yaratilmoqda...</p>
+          </div>
+        )}
+
         {/* Qidiruv Natijalari */}
-        {searchResult && (
+        {searchResult && !loading && (
           <div className="bg-white rounded-lg shadow-md p-6">
             <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">
               Sizning shaxsiy marshrutingiz
@@ -345,46 +351,64 @@ const Welcome = () => {
               </h4>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                 <div className="text-center">
-                  <p className="text-sm text-gray-600">Shahar</p>
-                  <p className="text-lg font-bold text-gray-800">
-                    {searchResult.trip_summary.city}
-                  </p>
-                </div>
-                <div className="text-center">
                   <p className="text-sm text-gray-600">Oy</p>
                   <p className="text-lg font-bold text-gray-800">
-                    {searchResult.trip_summary.month}
+                    {searchResult.result.trip_summary.month}
                   </p>
                 </div>
                 <div className="text-center">
                   <p className="text-sm text-gray-600">Kunlar</p>
                   <p className="text-lg font-bold text-gray-800">
-                    {searchResult.trip_summary.duration_days}
+                    {searchResult.result.trip_summary.duration_days}
                   </p>
                 </div>
                 <div className="text-center">
                   <p className="text-sm text-gray-600">Odamlar</p>
                   <p className="text-lg font-bold text-gray-800">
-                    {searchResult.trip_summary.people_count} kishi
+                    {searchResult.result.trip_summary.group_numbers} kishi
+                  </p>
+                </div>
+                <div className="text-center">
+                  <p className="text-sm text-gray-600">Guruh turi</p>
+                  <p className="text-lg font-bold text-gray-800">
+                    {searchResult.result.trip_summary.group_type}
                   </p>
                 </div>
                 <div className="text-center">
                   <p className="text-sm text-gray-600">Umumiy narx</p>
                   <p className="text-lg font-bold text-gray-800">
-                    ${searchResult.trip_summary.estimated_total_cost_usd}
+                    ${searchResult.result.trip_summary.estimated_total_cost_usd}
                   </p>
                 </div>
               </div>
-              {searchResult.trip_summary.people_count > 1 && (
+              {searchResult.result.trip_summary.group_numbers > 1 && (
                 <div className="mt-4 text-center">
                   <p className="text-sm text-gray-600">
                     Kishi boshiga:{" "}
                     <span className="font-semibold text-[#F9C80E]">
-                      ${searchResult.trip_summary.budget_per_person_usd}
+                      $
+                      {Math.floor(
+                        searchResult.result.trip_summary
+                          .estimated_total_cost_usd /
+                          searchResult.result.trip_summary.group_numbers
+                      )}
                     </span>
                   </p>
                 </div>
               )}
+            </div>
+
+            {/* Mehmonxona narxi */}
+            <div className="bg-blue-50 rounded-lg p-4 mb-6">
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-700">
+                  Kunlik mehmonxona narxi (barcha ishtirokchilar uchun):
+                </span>
+                <span className="text-lg font-bold text-blue-600">
+                  $
+                  {searchResult.result.total_hotel_cost_day_usd_for_all_members}
+                </span>
+              </div>
             </div>
 
             {/* Kunlik Rejalar */}
@@ -392,7 +416,7 @@ const Welcome = () => {
               <h4 className="text-xl font-semibold text-gray-800 mb-4">
                 Kunlik reja
               </h4>
-              {searchResult.daily_plan.map((day) => (
+              {searchResult.result.daily_plan.map((day) => (
                 <div
                   key={day.day}
                   className="border border-gray-200 rounded-lg p-4"
@@ -412,25 +436,18 @@ const Welcome = () => {
                         key={index}
                         className="flex items-center justify-between py-2 border-b border-gray-100"
                       >
-                        <div className="flex items-center space-x-4">
-                          <span className="text-sm font-medium text-gray-500 w-16">
+                        <div className="flex items-start space-x-4">
+                          <span className="text-sm font-medium text-gray-500 w-16 shrink-0">
                             {activity.time}
                           </span>
                           <span className="text-gray-700">
                             {activity.activity}
                           </span>
                         </div>
-                        <div className="text-right">
+                        <div className="text-right shrink-0">
                           <span className="text-sm font-semibold text-[#F9C80E]">
                             ${activity.cost_usd}
                           </span>
-                          {searchResult.trip_summary.people_count > 1 &&
-                            activity.cost_usd > 0 && (
-                              <p className="text-xs text-gray-500">
-                                ({searchResult.trip_summary.people_count} kishi
-                                uchun)
-                              </p>
-                            )}
                         </div>
                       </div>
                     ))}
@@ -438,6 +455,16 @@ const Welcome = () => {
                 </div>
               ))}
             </div>
+
+            {/* Izohlar */}
+            {searchResult.result.notes && (
+              <div className="mt-6 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                <h4 className="text-lg font-semibold text-yellow-800 mb-2">
+                  Muhim eslatmalar
+                </h4>
+                <p className="text-yellow-700">{searchResult.result.notes}</p>
+              </div>
+            )}
           </div>
         )}
       </div>
