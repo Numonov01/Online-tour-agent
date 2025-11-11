@@ -346,9 +346,6 @@ const Welcome = () => {
 
             {/* Sayohat Xulosasi */}
             <div className="bg-[#F9C80E] bg-opacity-10 rounded-lg p-6 mb-6">
-              <h4 className="text-xl font-semibold text-gray-800 mb-4">
-                Umumiy ma'lumot
-              </h4>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                 <div className="text-center">
                   <p className="text-sm text-gray-600">Oy</p>

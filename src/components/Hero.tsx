@@ -10,21 +10,21 @@ import Slide3 from "../assets/images/registon3.jpg";
 const slides = [
   {
     image: Slide1,
-    title: "Registon: Where History Meets Majesty",
+    title: "Registon: Tarix va Buyuklik Uchragan Maskan",
     description:
-      "Embark on unforgettable adventures—from thrilling game drives across open savannahs to tranquil nature escapes crafted just for you.",
+      "Unutilmas sarguzashtlarga chiqing — keng sahrolarda hayajonli sayohatlardan tortib, siz uchun maxsus yaratilgan sokin tabiat bag‘ridagi dam olish joylarigacha.",
   },
   {
     image: Slide2,
-    title: "Gur i amir: Safarning Yuragi",
+    title: "Go‘ri Amir: Safarning Yuragi",
     description:
-      "Discover the thrill of safari adventures that bring you closer to nature's wonders and create memories that last a lifetime.",
+      "Tabiat mo‘jizalariga yaqinlashtiradigan, butun umr yodingizda qoladigan sarguzashtlarni kashf eting.",
   },
   {
     image: Slide3,
-    title: "Siyob bozori: Tarix va Buyuklik Uchrashuvi",
+    title: "Siyob bozori: Tarix va Ulug‘vorlik Uchragan Joy",
     description:
-      "1950-yillarda bu hududlarning barchasi bekor qilindi. 1976 yilda Bogʻishamol.",
+      "1950-yillarda bu hududlarning barchasi bekor qilingan. 1976-yilda esa Bog‘ishamol barpo etilgan.",
   },
 ];
 
@@ -99,7 +99,7 @@ const Hero = () => {
               </p>
               <Link to="#">
                 <Button className="bg-[#F9C80E] text-black hover:bg-[#bdb715] hover:text-white z-30">
-                  Explore Now
+                  Ko'proq o'rganish
                 </Button>
               </Link>
             </div>

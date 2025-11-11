@@ -54,66 +54,7 @@ const Navigation = () => {
             <NavLink to="/">Home</NavLink>
             <NavLink to="#">About Us</NavLink>
             {/* Itineraries Button */}
-            <div className="relative group">
-              {/* Main Dropdown Button */}
-              <div className="flex items-center text-[#F9C80E] font-medium hover:text-[#E0A800] transition-colors duration-200 cursor-pointer">
-                <span>Itineraries</span>
-                <svg
-                  className="w-4 h-4 ml-1 transform group-hover:rotate-180 transition-transform duration-300"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-              </div>
-
-              {/* Country Dropdown List */}
-              <div className="absolute top-full left-0 py-2 hidden group-hover:flex flex-col bg-white shadow-md rounded-md overflow-visible z-50 min-w-[150px]">
-                {Object.entries(itineraryData).map(([country, daysObj]) => (
-                  <div key={country} className="relative group/item">
-                    {/* Country Row */}
-                    <div className="flex items-center justify-between px-4 py-2 mt-2 text-[#F9C80E] hover:text-safari-brown hover:bg-gray-100 transition-colors duration-200 whitespace-nowrap cursor-pointer">
-                      <Link to="#" className="w-full font-medium">
-                        {country.charAt(0).toUpperCase() + country.slice(1)}
-                      </Link>
-                      <svg
-                        className="w-4 h-4 ml-1 transform group-hover/item:rotate-90 rotate-180 transition-transform duration-300"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M5 12l7-7 7 7"
-                        />
-                      </svg>
-                    </div>
-                    {/* Submenu: Tour Days */}
-                    <div className="absolute top-1 left-full ml-1 hidden group-hover/item:flex flex-col bg-white shadow-md rounded-md min-w-[150px] z-50">
-                      {Object.entries(daysObj).map(([daysKey, info]) => (
-                        <Link
-                          key={daysKey}
-                          to="#"
-                          className="px-4 py-2 text-[#F9C80E] hover:text-safari-brown hover:bg-gray-100 transition-colors duration-200 whitespace-nowrap font-medium"
-                        >
-                          {info.title}
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
             <NavLink to="#">Gallery</NavLink>
-            <NavLink to="#">Testimonials</NavLink>
             <NavLink to="#">Contact Us</NavLink>
           </div>
 
@@ -183,63 +124,7 @@ const Navigation = () => {
               Home
             </NavLink>
             <NavLink to="#" onClick={() => setMenuOpen(false)}>
-              About Us
-            </NavLink>
-            <div className="w-full md:hidden">
-              {/* Main Toggle */}
-              <div
-                className="flex items-center justify-between  py-2 text-[#F9C80E] font-medium cursor-pointer"
-                onClick={() => setIsMainOpen(!isMainOpen)}
-              >
-                <span>Itineraries</span>
-                <ArrowIcon isOpen={isMainOpen} />
-              </div>
-
-              {/* Countries List */}
-              {isMainOpen && (
-                <div className="flex flex-col">
-                  {Object.entries(itineraryData).map(([country, daysObj]) => (
-                    <div key={country}>
-                      {/* Country Toggle */}
-                      <div className="flex items-center justify-between px-6 py-2 text-[#F9C80E] font-medium">
-                        <Link
-                          to="#"
-                          className="cursor-pointer hover:text-safari-brown"
-                        >
-                          {country.charAt(0).toUpperCase() + country.slice(1)}
-                        </Link>
-                        <button
-                          onClick={() => toggleCountry(country)}
-                          className="ml-2 focus:outline-none"
-                        >
-                          <ArrowIcon isOpen={openCountries[country]} />
-                        </button>
-                      </div>
-
-                      {/* Tour Days */}
-                      {openCountries[country] && (
-                        <div className="flex flex-col ml-6">
-                          {Object.entries(daysObj).map(([daysKey, info]) => (
-                            <Link
-                              key={daysKey}
-                              to="#"
-                              className="px-4 py-2 text-sm text-[#F9C80E] hover:text-safari-brown font-medium"
-                            >
-                              {info.title}
-                            </Link>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-            <NavLink to="#" onClick={() => setMenuOpen(false)}>
               Gallery
-            </NavLink>
-            <NavLink to="#" onClick={() => setMenuOpen(false)}>
-              Testimonials
             </NavLink>
             <NavLink to="#" onClick={() => setMenuOpen(false)}>
               Contact Us
